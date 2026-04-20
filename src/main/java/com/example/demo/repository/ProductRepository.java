@@ -31,4 +31,9 @@ public class ProductRepository {
     public void save(Product product) {
         database.add(product);
     }
+    
+    public boolean deleteById(Long id)
+    {
+    	return database.removeIf(p->p.getId().equals(id));
+    }
 }

@@ -27,11 +27,21 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
-    public String addProduct(Long id, String name, double price) {
-        if (price <= 0) {
-            return "Fiyat sıfırdan büyük olmalıdır!";
-        }
-        productRepository.save(new Product(id, name, price));
-        return "Ürün eklendi: " + name;
+    public Product addProduct(Product product) {
+        productRepository.save(product);
+        return product;
+    }
+    
+    public Optional<Product> updateProduct(Long id, Product updated)
+    {
+    	return productRepository.findById(id).map(existing -> {
+    		existing.setName(updated.getName());
+    		existing.setPrice(updated.getPrice());
+    		return existing;
+    	});
+    }
+    
+    public boolean deleteProduct(Long id) {
+    	return productRepository.deleteById(id);
     }
 }
