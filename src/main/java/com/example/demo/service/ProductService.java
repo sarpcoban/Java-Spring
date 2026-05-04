@@ -26,10 +26,14 @@ public class ProductService {
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }
+    
+    public Optional<Product> getProductByName(String name)
+    {
+    	return productRepository.findByNameIgnoreCase(name);
+    }
 
     public Product addProduct(Product product) {
-        productRepository.save(product);
-        return product;
+        return productRepository.save(product);
     }
     
     public Optional<Product> updateProduct(Long id, Product updated)
@@ -37,11 +41,13 @@ public class ProductService {
     	return productRepository.findById(id).map(existing -> {
     		existing.setName(updated.getName());
     		existing.setPrice(updated.getPrice());
-    		return existing;
+    		return productRepository.save(existing);
     	});
     }
     
     public boolean deleteProduct(Long id) {
-    	return productRepository.deleteById(id);
+    	if (!productRepository.existsById(id)) return false;
+    	productRepository.deleteById(id);
+    	return true;
     }
 }

@@ -2,18 +2,24 @@ package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "products")
 public class Product {
-	@JsonProperty("id")
+	//@JsonProperty("id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	@JsonProperty("name")
+	//@JsonProperty("name")
     private String name;
-	@JsonProperty("price")
+	//@JsonProperty("price")
     private double price;
 
 	public Product() {}
 	
-    public Product(Long id, String name, double price) {
-        this.id = id;
+    public Product(String name, double price) {
+        //this.id = id;
         this.name = name;
         this.price = price;
     }

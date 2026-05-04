@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.model.Product;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -9,9 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public class ProductRepository {
 
+public interface ProductRepository extends JpaRepository<Product, Long> {
+	
+	java.util.Optional<Product> findByNameIgnoreCase(String name);
+
+	/*
     private final List<Product> database = new ArrayList<>(List.of(
         new Product(1L, "Laptop", 15000.0),
         new Product(2L, "Telefon", 8000.0),
@@ -36,4 +40,5 @@ public class ProductRepository {
     {
     	return database.removeIf(p->p.getId().equals(id));
     }
+    */
 }
