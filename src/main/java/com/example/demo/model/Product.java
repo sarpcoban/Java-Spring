@@ -3,6 +3,9 @@ package com.example.demo.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "products")
@@ -12,8 +15,12 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	//@JsonProperty("name")
+	@NotNull(message = "İsim boş olamaz.")
+	@NotBlank(message = "İsim sadece boşluk olamaz.")
     private String name;
 	//@JsonProperty("price")
+	@NotNull(message = "Fiyat boş olamaz.")
+	@Positive(message = "Fiyat sıfıdan büyük olmalıdır.")
     private double price;
 
 	public Product() {}

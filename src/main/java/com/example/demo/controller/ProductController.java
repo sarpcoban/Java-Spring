@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +28,20 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    /*
     @GetMapping("/{id}")
     public ResponseEntity<Product> getById(@PathVariable Long id)
     {
     	return productService.getProductById(id)
     			.map(ResponseEntity::ok)
     			.orElse(ResponseEntity.notFound().build());
+    }
+    */
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getById(@PathVariable Long id)
+    {
+    	return ResponseEntity.ok(productService.getProductById(id));
     }
     
     /*
@@ -41,6 +52,8 @@ public class ProductController {
     }
     */
 
+    
+    /*
     @GetMapping("/search")
     public ResponseEntity<Product> getByName(@RequestParam String name)
     {
@@ -50,12 +63,28 @@ public class ProductController {
     			.map(ResponseEntity::ok)
     			.orElse(ResponseEntity.notFound().build());
     }
+    */
     
+    @GetMapping("/search")
+    public ResponseEntity<Product> getByName(@RequestParam String name)
+    {
+    	return productService.getProductByName(name)
+    			.map(ResponseEntity::ok)
+    			.orElse(ResponseEntity.notFound().build());
+    }
+    
+    /*
     @PostMapping
     public ResponseEntity<Product> create(@RequestBody Product product)
     {
     	Product saved = productService.addProduct(product);
     	return ResponseEntity.status(201).body(saved);
+    }*/
+    
+    @PostMapping
+    public ResponseEntity<Product> create(@Valid @RequestBody Product product)
+    {
+    	return ResponseEntity.status(201).body(productService.addProduct(product));
     }
     
     /*
@@ -67,6 +96,7 @@ public class ProductController {
     }
     */
     
+    /*
     @PutMapping("/{id}")
     public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product updated)
     {
@@ -74,12 +104,27 @@ public class ProductController {
     			.map(ResponseEntity::ok)
     			.orElse(ResponseEntity.notFound().build());
     }
+    */
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> update(@PathVariable Long id,
+    		@Valid @RequestBody Product updated)
+    {
+    	return ResponseEntity.ok(productService.updateProduct(id,  updated));
+    }
     
+    /*
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id)
     {
     	return productService.deleteProduct(id)
     		? ResponseEntity.noContent().build()
     		: ResponseEntity.notFound().build();
+    }
+    */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id)
+    {
+    	productService.deleteProduct(id);
+    	return ResponseEntity.noContent().build();
     }
 }
