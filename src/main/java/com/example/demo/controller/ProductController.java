@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ProductRequestDTO;
+import com.example.demo.dto.ProductResponseDTO;
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
 
@@ -24,7 +26,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAll() {
+    public List<ProductResponseDTO> getAll() {
         return productService.getAllProducts();
     }
 
@@ -39,7 +41,7 @@ public class ProductController {
     */
     
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getById(@PathVariable Long id)
+    public ResponseEntity<ProductResponseDTO> getById(@PathVariable Long id)
     {
     	return ResponseEntity.ok(productService.getProductById(id));
     }
@@ -82,9 +84,9 @@ public class ProductController {
     }*/
     
     @PostMapping
-    public ResponseEntity<Product> create(@Valid @RequestBody Product product)
+    public ResponseEntity<ProductResponseDTO> create(@Valid @RequestBody ProductRequestDTO dto)
     {
-    	return ResponseEntity.status(201).body(productService.addProduct(product));
+    	return ResponseEntity.status(201).body(productService.addProduct(dto));
     }
     
     /*
@@ -106,10 +108,10 @@ public class ProductController {
     }
     */
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id,
-    		@Valid @RequestBody Product updated)
+    public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id,
+    		@Valid @RequestBody ProductRequestDTO dto)
     {
-    	return ResponseEntity.ok(productService.updateProduct(id,  updated));
+    	return ResponseEntity.ok(productService.updateProduct(id,  dto));
     }
     
     /*

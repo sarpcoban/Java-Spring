@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.ProductRequestDTO;
+import com.example.demo.dto.ProductResponseDTO;
 import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
@@ -19,15 +21,46 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
+    
+    private ProductResponseDTO toResponse(Product product)
+    {
+    	return new ProductResponseDTO(
+    			product.getId(),
+    			product.getName(),
+    			product.getPrice());
+    }
+    
+    private Product toEntity(ProductRequestDTO dto)
+    {
+    	return new Product(dto.getName(), dto.getPrice());
+    }
 
+    /*
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
+    */
+    
+    public List<ProductResponseDTO> getAllProducts()
+    {
+    	return productRepository.findAll()
+    			.stream()
+    			.map(this::toResponse)
+    			.toList();
+    }
 
+    /*
     public Product getProductById(Long id)
     {
     	return productRepository.findById(id)
         		.orElseThrow(()-> new ProductNotFoundException(id));
+    }
+    */
+    
+    public ProductResponseDTO getProductById(Long id)
+    {
+    	return toResponse(productRepository.findById(id)
+    			.orElseThrow(()-> new ProductNotFoundException(id)));
     }
     
     /*
@@ -40,10 +73,18 @@ public class ProductService {
     	return productRepository.findByNameIgnoreCase(name);
     }
 
+    /*
     public Product addProduct(Product product) {
         return productRepository.save(product);
     }
+    */
     
+    public ProductResponseDTO addProduct(ProductRequestDTO dto)
+    {
+    	return toResponse(productRepository.save(toEntity(dto)));
+    }
+    
+    /*
     public Product updateProduct(Long id, Product updated)
     {
     	Product existing = productRepository.findById(id)
@@ -51,6 +92,16 @@ public class ProductService {
     	existing.setName(updated.getName());
     	existing.setPrice(updated.getPrice());
     	return productRepository.save(existing);
+    }
+    */
+    
+    public ProductResponseDTO updateProduct(Long id, ProductRequestDTO dto)
+    {
+    	Product existing = productRepository.findById(id)
+    			.orElseThrow(()->new ProductNotFoundException(id));
+    	existing.setName(dto.getName());
+    	existing.setPrice(dto.getPrice());
+    	return toResponse(productRepository.save(existing));
     }
     
     /*
@@ -64,9 +115,20 @@ public class ProductService {
     }
     */
     
+    /*
     public void deleteProduct(Long id)
     {
     	if(!productRepository.existsById(id))
+    	{
+    		throw new ProductNotFoundException(id);
+    	}
+    	productRepository.deleteById(id);
+    }
+    */
+    
+    public void deleteProduct(Long id)
+    {
+    	if (!productRepository.existsById(id))
     	{
     		throw new ProductNotFoundException(id);
     	}

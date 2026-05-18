@@ -15,12 +15,12 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	//@JsonProperty("name")
-	@NotNull(message = "İsim boş olamaz.")
-	@NotBlank(message = "İsim sadece boşluk olamaz.")
+	//@NotNull(message = "İsim boş olamaz.")
+	//@NotBlank(message = "İsim sadece boşluk olamaz.")
     private String name;
 	//@JsonProperty("price")
-	@NotNull(message = "Fiyat boş olamaz.")
-	@Positive(message = "Fiyat sıfıdan büyük olmalıdır.")
+	//@NotNull(message = "Fiyat boş olamaz.")
+	//@Positive(message = "Fiyat sıfıdan büyük olmalıdır.")
     private double price;
 
 	public Product() {}
